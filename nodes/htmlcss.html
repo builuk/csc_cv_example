@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTML & CSS · Andrii Builuk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .panel {
+      width: min(640px, 100%);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #93c5fd;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 4px 0 12px;
+    }
+
+    .short {
+      font-size: 16px;
+      color: #a5b4fc;
+      margin-bottom: 18px;
+    }
+
+    .long {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #cbd5f5;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 11px;
+      color: #22c55e;
+    }
+
+    @media (max-width: 640px) {
+      .panel {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <a class="back-link" href="../index.html">← Back to skill graph</a>
+    <p class="eyebrow">Node insight</p>
+    <h1>HTML & CSS</h1>
+    <p class="short">Builds responsive, semantic layouts for lessons and projects.</p>
+    <p class="long">5+ years of teaching HTML & CSS with JavaScript. Building clean, semantic markup and responsive layouts.</p>
+  </main>
+</body>
+</html>

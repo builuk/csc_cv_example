@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Andrii Builuk — QA Automation CV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/cytoscape@3.30.0/dist/cytoscape.min.js"></script>
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.16);
+      --accent-2: #22c55e;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --card: #111827;
+      --border-subtle: #1f2933;
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.6);
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sidebar {
+      background: linear-gradient(145deg, #020617, #020617 44%, #111827 100%);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px 24px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.22), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.18), transparent 55%);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .tagline {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    .name {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .role {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(79, 70, 229, 0.8);
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .contact-block {
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .contact-item span {
+      color: var(--text-muted);
+    }
+
+    a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .summary {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      white-space: nowrap;
+    }
+
+    .list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: grid;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .list li::before {
+      content: "• ";
+      color: var(--accent-2);
+    }
+
+    .graph-section {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .graph-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .graph-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .graph-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    #cy {
+      flex: 1;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      overflow: hidden;
+    }
+
+    .graph-footer {
+      display: flex;
+      margin-top: 10px;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.4);
+    }
+
+    .hint-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-2);
+      border-radius: 999px;
+    }
+
+    .node-details {
+      flex: 1;
+      min-width: 0;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      max-width: 380px;
+    }
+
+    .node-details h3 {
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .node-details strong {
+      color: var(--accent-2);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <div>
+        <div class="tagline">QA Automation • Python • Web</div>
+        <h1 class="name">Andrii Builuk</h1>
+        <p class="role">QA Automation Engineer · Teacher</p>
+        <div class="chip">
+          <span class="chip-dot"></span>
+          8+ years teaching Python & web · 4+ years QA automation
+        </div>
+      </div>
+
+      <section>
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-block">
+          <div class="contact-item">
+            <span>Email:</span> <a href="mailto:buyluk.andrey@gmail.com">buyluk.andrey@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span>Mobile:</span> <a href="tel:+380639405597">(+380) 63 940 55 97</a>
+          </div>
+          <div class="contact-item">
+            <span>Location:</span> Odesa, Ukraine
+          </div>
+          <div class="contact-item">
+            <span>English:</span> Upper-Intermediate
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Summary</h2>
+        <p class="summary">
+          QA Automation Engineer with strong QA theory, hands-on test automation in <strong>Python</strong> and <strong>Ruby</strong>,
+          and 8+ years teaching programming, 2D game development and web technologies.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="section-title">Core Stack</h2>
+        <div class="pill-row">
+          <span class="pill">Python</span>
+          <span class="pill">Ruby</span>
+          <span class="pill">HTML &amp; CSS</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">Selenium WebDriver</span>
+          <span class="pill">Django</span>
+          <span class="pill">SQL</span>
+          <span class="pill">Git</span>
+          <span class="pill">Postman</span>
+          <span class="pill">CircleCI</span>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Experience</h2>
+        <ul class="list">
+          <li>QA Automation — DataArt (08.2021 – now)</li>
+          <li>QA Automation — Provectus (12.2020 – 08.2021)</li>
+          <li>Teacher — ITStep (2016 – now)</li>
+          <li>Freelance web & chatbots (2015 – 2016)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="section-title">Soft Skills</h2>
+        <ul class="list">
+          <li>Time management & analytical thinking</li>
+          <li>Attention to detail & patience</li>
+          <li>Communication & public speaking</li>
+          <li>Mentoring & knowledge sharing</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="graph-section">
+      <header class="graph-header">
+        <div class="graph-title">Skill Graph</div>
+        <div class="graph-subtitle">Central node — profile · orbit — tech & experience</div>
+      </header>
+
+      <div id="cy"></div>
+
+      <footer class="graph-footer">
+        <div class="hint">
+          <span class="hint-dot"></span>
+          Click nodes to see details · drag to explore · scroll to zoom
+        </div>
+        <div class="node-details" id="node-details">
+          <h3>Click a node</h3>
+          <p>
+            This graph visualizes how your skills and experience are connected — for example,
+            <strong>2D Games</strong> are tied to <strong>Python</strong> and web technologies,
+            while <strong>QA Automation</strong> connects tools like Selenium, Django, Git, and CI.
+          </p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var cyContainer = document.getElementById("cy");
+
+      var cy = cytoscape({
+        container: cyContainer,
+
+        elements: {
+          nodes: [
+            // Center
+            { data: { id: "me", label: "Andrii\nBuiluk\nQA Automation", type: "center" } },
+
+            // Tech skills
+            { data: { id: "python", label: "Python", type: "tech" } },
+            { data: { id: "ruby", label: "Ruby", type: "tech" } },
+            { data: { id: "htmlcss", label: "HTML & CSS", type: "tech" } },
+            { data: { id: "js", label: "JavaScript", type: "tech" } },
+            { data: { id: "selenium", label: "Selenium\nWebDriver", type: "tool" } },
+            { data: { id: "django", label: "Django", type: "tech" } },
+            { data: { id: "sql", label: "SQL", type: "tech" } },
+            { data: { id: "git", label: "Git", type: "tool" } },
+            { data: { id: "postman", label: "Postman", type: "tool" } },
+            { data: { id: "circleci", label: "CircleCI", type: "tool" } },
+
+            // Areas / domains
+            { data: { id: "qa", label: "QA Theory\n& Testing", type: "domain" } },
+            { data: { id: "automation", label: "Test\nAutomation", type: "domain" } },
+            { data: { id: "games", label: "2D Game\nDevelopment", type: "domain" } },
+            { data: { id: "webdev", label: "Web\nDevelopment", type: "domain" } },
+            { data: { id: "teaching", label: "Teaching &\nMentoring", type: "domain" } },
+            { data: { id: "agile", label: "Agile &\nScrum", type: "domain" } },
+
+            // Soft skills
+            { data: { id: "softskills", label: "Soft Skills", type: "soft" } }
+          ],
+
+          edges: [
+            // Center -> everything
+            { data: { id: "me-python", source: "me", target: "python" } },
+            { data: { id: "me-ruby", source: "me", target: "ruby" } },
+            { data: { id: "me-htmlcss", source: "me", target: "htmlcss" } },
+            { data: { id: "me-js", source: "me", target: "js" } },
+            { data: { id: "me-selenium", source: "me", target: "selenium" } },
+            { data: { id: "me-django", source: "me", target: "django" } },
+            { data: { id: "me-sql", source: "me", target: "sql" } },
+            { data: { id: "me-git", source: "me", target: "git" } },
+            { data: { id: "me-postman", source: "me", target: "postman" } },
+            { data: { id: "me-circleci", source: "me", target: "circleci" } },
+            { data: { id: "me-qa", source: "me", target: "qa" } },
+            { data: { id: "me-automation", source: "me", target: "automation" } },
+            { data: { id: "me-games", source: "me", target: "games" } },
+            { data: { id: "me-webdev", source: "me", target: "webdev" } },
+            { data: { id: "me-teaching", source: "me", target: "teaching" } },
+            { data: { id: "me-agile", source: "me", target: "agile" } },
+            { data: { id: "me-softskills", source: "me", target: "softskills" } },
+
+            // Logical connections between skills
+            { data: { id: "python-games", source: "python", target: "games" } },
+            { data: { id: "python-automation", source: "python", target: "automation" } },
+            { data: { id: "python-django", source: "python", target: "django" } },
+            { data: { id: "python-selenium", source: "python", target: "selenium" } },
+
+            { data: { id: "ruby-automation", source: "ruby", target: "automation" } },
+            { data: { id: "selenium-automation", source: "selenium", target: "automation" } },
+
+            { data: { id: "webdev-htmlcss", source: "webdev", target: "htmlcss" } },
+            { data: { id: "webdev-js", source: "webdev", target: "js" } },
+            { data: { id: "webdev-django", source: "webdev", target: "django" } },
+
+            { data: { id: "games-htmlcss", source: "games", target: "htmlcss" } },
+            { data: { id: "games-js", source: "games", target: "js" } },
+
+            { data: { id: "qa-automation", source: "qa", target: "automation" } },
+            { data: { id: "qa-sql", source: "qa", target: "sql" } },
+            { data: { id: "qa-postman", source: "qa", target: "postman" } },
+
+            { data: { id: "automation-circleci", source: "automation", target: "circleci" } },
+            { data: { id: "automation-git", source: "automation", target: "git" } },
+
+            { data: { id: "teaching-games", source: "teaching", target: "games" } },
+            { data: { id: "teaching-python", source: "teaching", target: "python" } },
+            { data: { id: "teaching-webdev", source: "teaching", target: "webdev" } },
+
+            { data: { id: "agile-automation", source: "agile", target: "automation" } },
+            { data: { id: "softskills-teaching", source: "softskills", target: "teaching" } },
+            { data: { id: "softskills-qa", source: "softskills", target: "qa" } }
+          ]
+        },
+
+        style: [
+          {
+            selector: "node",
+            style: {
+              "shape": "round-rectangle",
+              "background-color": "rgba(148, 163, 184, 0.9)",
+              "label": "data(label)",
+              "color": "#e5e7eb",
+              "font-size": "10px",
+              "text-wrap": "wrap",
+              "text-max-width": "120px",
+              "text-valign": "center",
+              "text-halign": "center",
+              "padding": 8,
+              "width": "label",
+              "height": "label",
+              "min-zoomed-font-size": 6,
+              "border-width": 1,
+              "border-color": "rgba(15, 23, 42, 0.9)",
+              "overlay-opacity": 0,
+              "box-shadow": "0 8px 24px rgba(0,0,0,0.35)"
+            }
+          },
+          {
+            selector: "node[type='center']",
+            style: {
+              "padding": 22,
+              "background-color": "#4f46e5",
+              "font-size": "12px",
+              "font-weight": "700",
+              "border-width": 3,
+              "border-color": "rgba(191, 219, 254, 0.9)",
+              "text-max-width": "180px",
+              "text-outline-color": "#000",
+              "text-outline-width": 0
+            }
+          },
+          {
+            selector: "node[type='tech']",
+            style: {
+              "background-color": "#22c55e"
+            }
+          },
+          {
+            selector: "node[type='tool']",
+            style: {
+              "background-color": "#0ea5e9"
+            }
+          },
+          {
+            selector: "node[type='domain']",
+            style: {
+              "background-color": "#a855f7"
+            }
+          },
+          {
+            selector: "node[type='soft']",
+            style: {
+              "background-color": "#f97316"
+            }
+          },
+          {
+            selector: "edge",
+            style: {
+              "width": 1.4,
+              "line-color": "rgba(148, 163, 184, 0.55)",
+              "curve-style": "straight",
+              "target-arrow-shape": "none",
+              "opacity": 0.9
+            }
+          },
+          {
+            selector: "node:hover",
+            style: {
+              "border-width": 3,
+              "border-color": "#facc15",
+              "z-index": 999
+            }
+          },
+          {
+            selector: "node:selected",
+            style: {
+              "border-width": 3,
+              "border-color": "#facc15",
+              "shadow-blur": 12,
+              "shadow-color": "rgba(250, 204, 21, 0.7)"
+            }
+          }
+        ],
+
+        layout: {
+          name: "concentric",
+          padding: 10,
+          startAngle: (3 / 2) * Math.PI,
+          sweep: 2 * Math.PI,
+          levelWidth: function () {
+            return 1;
+          },
+          concentric: function (node) {
+            if (node.id() === "me") return 3;
+            if (["python", "ruby", "htmlcss", "js", "selenium", "django"].includes(node.id())) return 2;
+            return 1;
+          }
+        },
+
+        wheelSensitivity: 0.25
+      });
+
+      var cyContainer = document.getElementById("cy");
+      var detailsBox = document.getElementById("node-details");
+      var EXPANSION_FACTOR = 1.3;
+
+      cy.ready(function() {
+        cy.nodes().forEach(function(node) {
+          if (!node.data("originalWidth")) {
+            node.data("originalWidth", node.width());
+            node.data("originalHeight", node.height());
+          }
+        });
+      });
+
+      cyContainer.addEventListener("contextmenu", function (evt) {
+        evt.preventDefault();
+      });
+
+      var nodeInfo = {
+        me: {
+          title: "Profile",
+          short: "QA automation engineer & mentor focused on modern web stacks.",
+          text:
+            "QA Automation Engineer & Teacher. Experience in automated testing (Python, Ruby), "+
+            "web technologies and mentoring students in Python, HTML & CSS, JavaScript and 2D game development."
+        },
+        python: {
+          title: "Python",
+          short: "Primary automation and teaching language for 8+ years.",
+          text:
+            "8+ years of teaching Python courses including Python for automated testing. "+
+            "Used for test automation, backend logic and game prototypes."
+        },
+        ruby: {
+          title: "Ruby",
+          short: "Comfortable with Ruby automation stacks and RSpec suites.",
+          text:
+            "Experience with Ruby-based automation frameworks and test suites. "+
+            "Comfortable with RSpec, web test automation and scripting."
+        },
+        htmlcss: {
+          title: "HTML & CSS",
+          short: "Builds responsive, semantic layouts for lessons and projects.",
+          text:
+            "5+ years of teaching HTML & CSS with JavaScript. Building clean, semantic markup and responsive layouts."
+        },
+        js: {
+          title: "JavaScript",
+          short: "Adds interactivity and browser logic to coursework.",
+          text:
+            "JavaScript for interactive web pages and browser-side logic. Used in teaching and for small projects."
+        },
+        selenium: {
+          title: "Selenium WebDriver",
+          short: "Delivers robust UI automation with waits and Page Objects.",
+          text:
+            "UI test automation for web applications in Python/Ruby stacks. Page Object patterns, waits, CI integration."
+        },
+        django: {
+          title: "Django",
+          short: "Framework of choice for tested web apps, APIs and admin panels.",
+          text:
+            "Web framework experience for building and testing web applications, APIs and admin interfaces."
+        },
+        sql: {
+          title: "SQL",
+          short: "Validates data and backs DB-level automated checks.",
+          text:
+            "Writing queries to validate test data, investigate issues and support automated checks at DB level."
+        },
+        git: {
+          title: "Git",
+          short: "Daily branching, reviews and mentoring on Git basics.",
+          text:
+            "Daily usage: feature branches, code review, resolving conflicts, supporting students with Git workflows."
+        },
+        postman: {
+          title: "Postman",
+          short: "Keeps API regression suites organized for quick checks.",
+          text:
+            "API testing, collections for regression suites, quick investigation of backend issues."
+        },
+        circleci: {
+          title: "CircleCI",
+          short: "CI orchestrator for automated UI/API pipelines.",
+          text:
+            "CI for automated test pipelines: running UI/API tests, reporting and integration with project workflows."
+        },
+        qa: {
+          title: "QA Theory & Testing",
+          short: "Strong grounding in QA fundamentals and documentation.",
+          text:
+            "Strong understanding of testing types, levels, test design techniques and test documentation."
+        },
+        automation: {
+          title: "Test Automation",
+          short: "Designs and scales automation suites for web products.",
+          text:
+            "Designing, implementing and maintaining automated test suites for web apps on real projects."
+        },
+        games: {
+          title: "2D Game Development",
+          short: "Connects creative game projects with coding practice.",
+          text:
+            "Teaching and mentoring in 2D game creation. Linking game projects with programming and QA skills."
+        },
+        webdev: {
+          title: "Web Development",
+          short: "Guides students through full-stack web delivery.",
+          text:
+            "Creating websites and mentoring students: from layout to behavior and deployment."
+        },
+        teaching: {
+          title: "Teaching & Mentoring",
+          short: "Hands-on mentor since 2016 with practical coaching.",
+          text:
+            "Teacher at ITStep since 2016. Helping students learn Python, web dev, game dev and testing through practice."
+        },
+        agile: {
+          title: "Agile & Scrum",
+          short: "Works within Scrum loops for iterative improvements.",
+          text:
+            "Experience working in Agile teams with Scrum ceremonies, iterative delivery and close collaboration."
+        },
+        softskills: {
+          title: "Soft Skills",
+          short: "Communicates clearly, manages time, keeps teams aligned.",
+          text:
+            "Time management, analytical thinking, patience, communication and strong public speaking skills."
+        }
+      };
+
+      var nodePages = {};
+      Object.keys(nodeInfo).forEach(function (key) {
+        nodePages[key] = "nodes/" + key + ".html";
+      });
+
+      cy.on("tap", "node", function (evt) {
+        var node = evt.target;
+        var id = node.id();
+        var info = nodeInfo[id] || nodeInfo["me"];
+
+        detailsBox.innerHTML = "<h3>" + info.title + "</h3><p>" + info.text + "</p>";
+
+        var targetPage = nodePages[id];
+        if (targetPage) {
+          window.open(targetPage, "_blank", "noopener");
+        }
+      });
+
+      function handleRightClick(node) {
+        if (!node || node.length === 0) return;
+        
+        var id = node.id();
+        var info = nodeInfo[id] || nodeInfo["me"];
+        var expanded = node.data("expanded") === true;
+
+        if (!node.data("originalWidth")) {
+          node.data("originalWidth", node.width());
+          node.data("originalHeight", node.height());
+        }
+
+        if (expanded) {
+          node.data("expanded", false);
+          var originalWidth = node.data("originalWidth");
+          var originalHeight = node.data("originalHeight");
+          node.animate(
+            {
+              style: {
+                width: originalWidth,
+                height: originalHeight
+              }
+            },
+            { duration: 180 }
+          );
+        } else {
+          node.data("expanded", true);
+          var currentWidth = node.width();
+          var currentHeight = node.height();
+          var newWidth = currentWidth * EXPANSION_FACTOR;
+          var newHeight = currentHeight * EXPANSION_FACTOR;
+          node.animate(
+            {
+              style: {
+                width: newWidth,
+                height: newHeight
+              }
+            },
+            { duration: 180 }
+          );
+        }
+
+        var shortText = info.short || info.text;
+        detailsBox.innerHTML = "<h3>" + info.title + "</h3><p>" + shortText + "</p>";
+      }
+
+      cy.on("cxttap", "node", function(evt) {
+        handleRightClick(evt.target);
+      });
+
+      cyContainer.addEventListener("mousedown", function(evt) {
+        if (evt.button === 2) {
+          evt.preventDefault();
+          var rect = cyContainer.getBoundingClientRect();
+          var x = evt.clientX - rect.left;
+          var y = evt.clientY - rect.top;
+          var pos = cy.renderer().projectIntoViewport(x, y);
+          var node = cy.getElementsAtPoint(pos.x, pos.y).filter("node").first();
+          handleRightClick(node);
+        }
+      });
+
+      // Focus center by default
+      cy.$("#me").select();
+    });
+  </script>
+</body>
+</html>
