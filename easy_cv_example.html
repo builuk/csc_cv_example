@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>CV Graph</title>
+  <script src="https://unpkg.com/cytoscape@3/dist/cytoscape.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+    #cy { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+<div id="cy"></div>
+
+<script>
+  const cy = cytoscape({
+    container: document.getElementById('cy'),
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'shape': 'round-rectangle',
+          'background-color': '#0074D9',
+          'label': 'data(label)',
+          'color': '#fff',
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'font-size': 10,
+          'text-wrap': 'wrap',
+          'text-max-width': 100,
+          'width': 'label',
+          'height': 'label',
+          'padding': '8px'
+        }
+      },
+      {
+        selector: '#me',
+        style: {
+          'background-color': '#FF4136',
+          'font-size': 12,
+          'font-weight': 'bold',
+          'text-max-width': 140
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 2,
+          'line-color': '#aaa',
+          'target-arrow-color': '#aaa',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier'
+        }
+      }
+    ],
+    elements: {
+      nodes: [
+        {
+          data: {
+            id: 'me',
+            label: 'Andrii\nQA Automation & Lecturer\nPython, Django, Ruby'
+          }
+        },
+        { data: { id: 'python',   label: 'Python' } },
+        { data: { id: 'django',   label: 'Django / DRF' } },
+        { data: { id: 'ruby',     label: 'Ruby / Rails' } },
+        { data: { id: 'testing',  label: 'QA / Testing' } },
+        { data: { id: 'autotests',label: 'Autotests\nPytest, RSpec' } },
+        { data: { id: 'frontend', label: 'Frontend\nHTML, JS' } },
+        { data: { id: 'edu',      label: 'Teaching\nPython, Games' } },
+        { data: { id: 'devops',   label: 'CI/CD\nGit, CI' } }
+      ],
+      edges: [
+        { data: { id: 'e1', source: 'me', target: 'python' } },
+        { data: { id: 'e2', source: 'me', target: 'django' } },
+        { data: { id: 'e3', source: 'me', target: 'ruby' } },
+        { data: { id: 'e4', source: 'me', target: 'testing' } },
+        { data: { id: 'e5', source: 'me', target: 'autotests' } },
+        { data: { id: 'e6', source: 'me', target: 'frontend' } },
+        { data: { id: 'e7', source: 'me', target: 'edu' } },
+        { data: { id: 'e8', source: 'me', target: 'devops' } }
+      ]
+    },
+    layout: { name: 'circle', padding: 20 }
+  });
+</script>
+</body>
+</html>
